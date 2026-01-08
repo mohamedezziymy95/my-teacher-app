@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تصحيح سلسلة تمارين الكيمياء - التوازنات الحمضية القاعدية</title>
+    
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0c1e 0%, #1a1a3e 50%, #2d1b4e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* رأس الصفحة */
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 25px;
+            text-align: center;
+            margin-bottom: 35px;
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.4em;
+            margin-bottom: 12px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.15em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .topic {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 25px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* التمارين */
+        .exercise {
+            background: white;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .exercise:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+
+        .exercise-header {
+            padding: 22px 28px;
+            color: white;
+            font-size: 1.35em;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* ألوان مختلفة لكل تمرين */
+        .ex1 .exercise-header { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+        .ex2 .exercise-header { background: linear-gradient(135deg, #dc2626 0%, #f97316 100%); }
+        .ex3 .exercise-header { background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%); }
+        .ex5 .exercise-header { background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%); }
+        .ex8 .exercise-header { background: linear-gradient(135deg, #ca8a04 0%, #eab308 100%); }
+        .ex9 .exercise-header { background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%); }
+
+        .exercise-content {
+            padding: 28px;
+        }
+
+        /* الأجزاء */
+        .part {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-right: 5px solid #0ea5e9;
+        }
+
+        .part-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #0369a1;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* الأسئلة */
+        .question {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 18px;
+            border-right: 5px solid;
+            transition: all 0.3s ease;
+        }
+
+        .question:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateX(-5px);
+        }
+
+        .ex1 .question { border-right-color: #10b981; }
+        .ex2 .question { border-right-color: #f97316; }
+        .ex3 .question { border-right-color: #06b6d4; }
+        .ex5 .question { border-right-color: #c026d3; }
+        .ex8 .question { border-right-color: #eab308; }
+        .ex9 .question { border-right-color: #14b8a6; }
+
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 12px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin-left: 12px;
+            font-size: 0.9em;
+        }
+
+        .ex1 .question-number { background: linear-gradient(135deg, #059669, #10b981); }
+        .ex2 .question-number { background: linear-gradient(135deg, #dc2626, #f97316); }
+        .ex3 .question-number { background: linear-gradient(135deg, #2563eb, #06b6d4); }
+        .ex5 .question-number { background: linear-gradient(135deg, #7c3aed, #c026d3); }
+        .ex8 .question-number { background: linear-gradient(135deg, #ca8a04, #eab308); }
+        .ex9 .question-number { background: linear-gradient(135deg, #0891b2, #14b8a6); }
+
+        .question-title {
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+
+        .answer {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            line-height: 2.2;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* صندوق المعادلة */
+        .equation-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: center;
+            border: 2px dashed #f59e0b;
+            font-size: 1.1em;
+        }
+
+        /* صندوق النتيجة النهائية */
+        .final-result {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.15em;
+            font-weight: bold;
+            margin: 18px 0;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
+        }
+
+        /* صندوق الملاحظة */
+        .note-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            padding: 18px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-right: 5px solid #3b82f6;
+        }
+
+        .note-box::before {
+            content: "💡 ";
+            font-size: 1.2em;
+        }
+
+        /* صندوق التحذير */
+        .warning-box {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            padding: 18px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-right: 5px solid #ef4444;
+        }
+
+        .warning-box::before {
+            content: "⚠️ ";
+            font-size: 1.2em;
+        }
+
+        /* صندوق النجاح */
+        .success-box {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            padding: 18px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-right: 5px solid #22c55e;
+        }
+
+        .success-box::before {
+            content: "✅ ";
+            font-size: 1.2em;
+        }
+
+        /* الجدول */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 15px 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        /* مخطط الهيمنة */
+        .dominance-chart {
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .ph-axis {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .ph-line {
+            height: 6px;
+            background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #22c55e 100%);
+            border-radius: 3px;
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .pka-marker {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .pka-marker::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: #1e293b;
+        }
+
+        .species-labels {
+            display: flex;
+            justify-content: space-between;
+            max-width: 400px;
+            margin: 15px auto 0;
+        }
+
+        .species-label {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        .acid-label {
+            background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
+            color: #991b1b;
+        }
+
+        .base-label {
+            background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%);
+            color: #166534;
+        }
+
+        /* التذييل */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255,255,255,0.85);
+            font-size: 1em;
+        }
+
+        /* تأثيرات حركية */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .exercise {
+            animation: fadeInUp 0.7s ease forwards;
+            opacity: 0;
+        }
+
+        .exercise:nth-child(1) { animation-delay: 0.1s; }
+        .exercise:nth-child(2) { animation-delay: 0.2s; }
+        .exercise:nth-child(3) { animation-delay: 0.3s; }
+        .exercise:nth-child(4) { animation-delay: 0.4s; }
+        .exercise:nth-child(5) { animation-delay: 0.5s; }
+        .exercise:nth-child(6) { animation-delay: 0.6s; }
+
+        /* التجاوب */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .exercise-header { 
+                font-size: 1.1em; 
+                flex-direction: column; 
+                text-align: center;
+            }
+            .container { padding: 10px; }
+            body { padding: 10px; }
+            .question { padding: 15px; }
+            .answer { padding: 15px; }
+            table { font-size: 0.85em; }
+            th, td { padding: 8px 5px; }
+        }
+
+        /* شريط التنقل */
+        .nav-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-pill {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .nav-pill:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        /* الأيقونات */
+        .icon { margin-left: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- رأس الصفحة -->
+        <div class="header">
+            <h1>🧪 تصحيح سلسلة تمارين الكيمياء</h1>
+            <p class="subtitle">السنة الثانية بكالوريا - علوم تجريبية</p>
+            <div class="topic">التوازنات الحمضية القاعدية</div>
+        </div>
+
+        <!-- شريط التنقل -->
+        <div class="nav-pills">
+            <a href="#ex1" class="nav-pill">التمرين 1</a>
+            <a href="#ex2" class="nav-pill">التمرين 2</a>
+            <a href="#ex3" class="nav-pill">التمرين 3</a>
+            <a href="#ex5" class="nav-pill">التمرين 5</a>
+            <a href="#ex8" class="nav-pill">التمرين 8</a>
+            <a href="#ex9" class="nav-pill">التمرين 9</a>
+        </div>
+
+        <!-- التمرين 1 -->
+        <div class="exercise ex1" id="ex1">
+            <div class="exercise-header">
+                <span><span class="icon">⚗️</span> التمرين 1: تفاعل الأمونياك وحمض الكلوريدريك</span>
+            </div>
+            <div class="exercise-content">
+                
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">1</span>
+                        معادلة التفاعل
+                    </div>
+                    <div class="answer">
+                        <p>تفاعل الأمونياك (قاعدة) مع أيونات الأوكسونيوم (حمض):</p>
+                        <div class="equation-box">
+                            $$NH_{3(aq)} + H_3O^+_{(aq)} \rightarrow NH^+_{4(aq)} + H_2O_{(l)}$$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">2</span>
+                        ثابتة التوازن \(K\)
+                    </div>
+                    <div class="answer">
+                        <p>تعبير ثابتة التوازن:</p>
+                        <div class="equation-box">
+                            $$K = \frac{[NH_4^+]}{[NH_3][H_3O^+]} = \frac{1}{K_{A2}}$$
+                        </div>
+                        <p>حيث أن \(pK_{A2} = 9.2\) للمزدوجة \(NH_4^+/NH_3\):</p>
+                        <div class="equation-box">
+                            $$K = 10^{pK_{A2}} = 10^{9.2}$$
+                        </div>
+                        <div class="final-result">
+                            $$K \approx 1.58 \times 10^9$$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">3</span>
+                        طبيعة التفاعل
+                    </div>
+                    <div class="answer">
+                        <div class="success-box">
+                            بما أن \(K > 10^4\)، فإن <strong>التفاعل كلي (تام)</strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- التمرين 2 -->
+        <div class="exercise ex2" id="ex2">
+            <div class="exercise-header">
+                <span><span class="icon">📊</span> التمرين 2: مخطط توزيع حمض البنزويك</span>
+            </div>
+            <div class="exercise-content">
+                
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">1</span>
+                        تحديد \(pK_A\) مبيانياً
+                    </div>
+                    <div class="answer">
+                        <p>عند نقطة تقاطع المنحنيين (المنحنى المتصل \(\%HA\) والمنحنى المتقطع \(\%A^-\)):</p>
+                        <div class="note-box">
+                            يكون تركيز الحمض مساوياً لتركيز القاعدة المرافقة:
+                            $$[HA] = [A^-] \implies pH = pK_A$$
+                        </div>
+                        <p>من خلال المبيان، يتقاطع المنحنيان عند القيمة:</p>
+                        <div class="final-result">
+                            $$pK_A(HA/A^-) = 4.2$$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">2</span>
+                        التراكيز المولية عند \(pH = 5.0\)
+                    </div>
+                    <div class="answer">
+                        <p>من المبيان عند \(pH = 5.0\):</p>
+                        <ul style="margin: 15px 0; padding-right: 25px;">
+                            <li>نسبة القاعدة: \(\%A^- \approx 86\%\)</li>
+                            <li>نسبة الحمض: \(\%HA \approx 14\%\)</li>
+                        </ul>
+                        <p>بما أن التركيز الكلي \(C = 10 \text{ mmol/L}\):</p>
+                        <div class="equation-box">
+                            $$[A^-] = C \times 0.86 = 8.6 \text{ mmol/L}$$
+                            $$[HA] = C \times 0.14 = 1.4 \text{ mmol/L}$$
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- التمرين 3 -->
+        <div class="exercise ex3" id="ex3">
+            <div class="exercise-header">
+                <span><span class="icon">🥛</span> التمرين 3: حمض اللاكتيك في الحليب</span>
+            </div>
+            <div class="exercise-content">
+                
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">1</span>
+                        مخطط الهيمنة
+                    </div>
+                    <div class="answer">
+                        <div class="dominance-chart">
+                            <p style="margin-bottom: 15px; font-weight: bold;">مخطط هيمنة حمض اللاكتيك</p>
+                            <div class="ph-axis">
+                                <div class="ph-line">
+                                    <div class="pka-marker">pKₐ = 3.9</div>
+                                </div>
+                            </div>
+                            <div class="species-labels">
+                                <span class="species-label acid-label">CH₃CHOHCOOH مهيمن</span>
+                                <span class="species-label base-label">CH₃CHOHCOO⁻ مهيمن</span>
+                            </div>
+                            <p style="margin-top: 15px; color: #64748b; font-size: 0.9em;">
+                                ← pH &lt; 3.9 | pH &gt; 3.9 →
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">2</span>
+                        النوع المهيمن في الحليب
+                    </div>
+                    <div class="answer">
+                        <p>بما أن \(pH_{\text{حليب}} = 6.5\) وهي أكبر من \(pK_A = 3.9\):</p>
+                        <div class="final-result">
+                            أيون اللاكتات \(CH_3CHOHCOO^-\) هو النوع المهيمن
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">3</span>
+                        حساب النسبة \(\frac{[CH_3CHOHCOOH]}{[CH_3CHOHCOO^-]}\)
+                    </div>
+                    <div class="answer">
+                        <p>نستخدم العلاقة:</p>
+                        <div class="equation-box">
+                            $$pH = pK_A + \log\frac{[base]}{[acid]} \implies \frac{[acid]}{[base]} = 10^{pK_A - pH}$$
+                        </div>
+                        <p>التطبيق العددي:</p>
+                        <div class="equation-box">
+                            $$\text{النسبة} = 10^{3.9 - 6.5} = 10^{-2.6}$$
+                        </div>
+                        <div class="final-result">
+                            $$\frac{[CH_3CHOHCOOH]}{[CH_3CHOHCOO^-]} \approx 2.5 \times 10^{-3}$$
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- التمرين 5 -->
+        <div class="exercise ex5" id="ex5">
+            <div class="exercise-header">
+                <span><span class="icon">🔬</span> التمرين 5: حمض الميثانويك (الفورميك)</span>
+            </div>
+            <div class="exercise-content">
+                
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">1</span>
+                        معادلة التفاعل مع الماء
+                    </div>
+                    <div class="answer">
+                        <div class="equation-box">
+                            $$HCOOH_{(aq)} + H_2O_{(l)} \rightleftharpoons HCOO^-_{(aq)} + H_3O^+_{(aq)}$$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">2</span>
+                        التراكيز عند التوازن
+                    </div>
+                    <div class="answer">
+                        <p><strong>تركيز أيونات الأوكسونيوم:</strong></p>
+                        <div class="equation-box">
+                            $$[H_3O^+] = 10^{-pH} = 10^{-2.65} \approx 2.24 \times 10^{-3} \text{ mol/L}$$
+                        </div>
+                        
+                        <p><strong>تركيز أيون الفورمات:</strong></p>
+                        <div class="equation-box">
+                            $$[HCOO^-] = [H_3O^+] \approx 2.24 \times 10^{-3} \text{ mol/L}$$
+                        </div>
+                        
+                        <p><strong>تركيز الحمض المتبقي:</strong></p>
+                        <div class="equation-box">
+                            $$[HCOOH] = C - [H_3O^+] = 3.0 \times 10^{-2} - 2.24 \times 10^{-3}$$
+                        </div>
+                        <div class="final-result">
+                            $$[HCOOH] \approx 2.78 \times 10^{-2} \text{ mol/L}$$
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">3</span>
+                        حساب ثابتة الحمضية \(pK_A\)
+                    </div>
+                    <div class="answer">
+                        <p>تعبير ثابتة الحمضية:</p>
+                        <div class="equation-box">
+                            $$K_A = \frac{[HCOO^-][H_3O^+]}{[HCOOH]} = \frac{(2.24 \times 10^{-3})^2}{2.78 \times 10^{-2}}$$
+                        </div>
+                        <div class="equation-box">
+                            $$K_A \approx 1.8 \times 10^{-4}$$
+                        </div>
+                        <div class="final-result">
+                            $$pK_A = -\log(K_A) \approx 3.74$$
+                        </div>
+                        <div class="note-box">
+                            القيمة التقريبية المذكورة في المراجع هي \(pK_A = 3.8\)
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- التمرين 8 -->
+        <div class="exercise ex8" id="ex8">
+            <div class="exercise-header">
+                <span><span class="icon">⚖️</span> التمرين 8: مقارنة المزدوجات</span>
+            </div>
+            <div class="exercise-content">
+                
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">1</span>
+                        قيم \(pK_A\) من المخطط
+                    </div>
+                    <div class="answer">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>المزدوجة</th>
+                                        <th>قيمة \(pK_A\)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>\(HCOOH/HCOO^-\)</td>
+                                        <td><strong>3.8</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>\(CH_3NH_3^+/CH_3NH_2\)</td>
+                                        <td><strong>10.7</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <div class="question-title">
+                        <span class="question-number">2</span>
+                        هل يمكن أن يهيمنا معاً؟
+                    </div>
+                    <div class="answer">
+                        <div class="success-box">
+                            <strong>نعم، يمكن ذلك!</strong>
+                        </div>
+                        <p>في مجال \(pH\) المحصور بين القيمتين \(3.8\) و \(10.7\):</p>
+                        <ul style="margin: 15px 0; padding-right: 25px; line-height: 2.5;">
+                            <li>\(pH > pK_{A1} = 3.8\) ← هيمنة القاعدة \(HCOO^-\)</li>
+                            <li>\(pH < pK_{A2} = 10.7\) ← هيمنة الحمض \(CH_3NH_3^+\)</li>
+                        </ul>
+                        <div class="note-box">
+                            إذن في المجال \([3.8 ; 10.7]\)، يهيمن كل من \(HCOO^-\) و \(CH_3NH_3^+\) معاً
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- التمرين 9 -->
+        <div class="exercise ex9" id="ex9">
+            <div class="exercise-header">
+                <span><span class="icon">🎨</span> التمرين 9: دراسة الكاشف الملون (أزرق البروموفينول)</span>
+            </div>
+            <div class="exercise-content">
+
+                <!-- الجزء الأول -->
+                <div class="part">
+                    <div class="part-title">
+                        <span>📌</span> الجزء الأول: دراسة مبيانية وتفاعل الكاشف مع الماء
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">1</span>
+                            تحديد \(pK_A\) للمزدوجة \(HIn/In^-\) مبيانياً
+                        </div>
+                        <div class="answer">
+                            <p>من خلال مبيان توزيع التراكيز، نحدد نقطة تقاطع المنحنيين \([HIn]\) و \([In^-]\).</p>
+                            <p>عند هذه النقطة:</p>
+                            <div class="equation-box">
+                                $$[HIn] = [In^-] \implies pH = pK_A$$
+                            </div>
+                            <p>بالإسقاط على محور الأفاصيل:</p>
+                            <div class="final-result">
+                                $$pK_A \approx 3.9$$
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">2</span>
+                            مخطط الهيمنة
+                        </div>
+                        <div class="answer">
+                            <div class="dominance-chart">
+                                <p style="margin-bottom: 15px; font-weight: bold;">مخطط هيمنة أزرق البروموفينول</p>
+                                <div class="ph-axis">
+                                    <div class="ph-line">
+                                        <div class="pka-marker">pKₐ = 3.9</div>
+                                    </div>
+                                </div>
+                                <div class="species-labels">
+                                    <span class="species-label acid-label">🟡 HIn (أصفر)</span>
+                                    <span class="species-label base-label">🔵 In⁻ (أزرق)</span>
+                                </div>
+                                <p style="margin-top: 15px; color: #64748b; font-size: 0.9em;">
+                                    ← pH &lt; 3.9 | pH &gt; 3.9 →
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">3</span>
+                            معادلة تفاعل \(HIn\) مع الماء
+                        </div>
+                        <div class="answer">
+                            <div class="equation-box">
+                                $$HIn_{(aq)} + H_2O_{(l)} \rightleftharpoons In^-_{(aq)} + H_3O^+_{(aq)}$$
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الجزء الثاني -->
+                <div class="part">
+                    <div class="part-title">
+                        <span>📌</span> الجزء الثاني: دراسة المحلول \(S_0\)
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">1.1</span>
+                            النوع المهيمن
+                        </div>
+                        <div class="answer">
+                            <p>بما أن \(pH = 5.5\) و \(pK_A = 3.9\)، فإن \(pH > pK_A\):</p>
+                            <div class="final-result">
+                                النوع القاعدي \(In^-\) هو المهيمن
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">1.2</span>
+                            تعبير \(K_A\)
+                        </div>
+                        <div class="answer">
+                            <div class="equation-box">
+                                $$K_A = \frac{[In^-]_{eq} \cdot [H_3O^+]_{eq}}{[HIn]_{eq}}$$
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">1.3</span>
+                            استنتاج العلاقة بين \(pH\) و \(pK_A\)
+                        </div>
+                        <div class="answer">
+                            <p>بإدخال اللوغاريتم العشري \(-\log\) على تعبير \(K_A\):</p>
+                            <div class="equation-box">
+                                $$-\log(K_A) = -\log[H_3O^+] - \log\frac{[In^-]}{[HIn]}$$
+                            </div>
+                            <div class="equation-box">
+                                $$pK_A = pH - \log\frac{[In^-]}{[HIn]}$$
+                            </div>
+                            <div class="final-result">
+                                $$pH = pK_A + \log\frac{[In^-]}{[HIn]}$$
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">1.4</span>
+                            حساب النسبة \(\frac{[In^-]}{[HIn]}\)
+                        </div>
+                        <div class="answer">
+                            <div class="equation-box">
+                                $$\frac{[In^-]}{[HIn]} = 10^{pH - pK_A} = 10^{5.5 - 3.9} = 10^{1.6}$$
+                            </div>
+                            <div class="final-result">
+                                $$\frac{[In^-]}{[HIn]} \approx 39.8$$
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">1.5</span>
+                            جدول تقدم التفاعل
+                        </div>
+                        <div class="answer">
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>الحالة</th>
+                                            <th>التقدم</th>
+                                            <th>\(HIn\)</th>
+                                            <th>\(H_2O\)</th>
+                                            <th>\(In^-\)</th>
+                                            <th>\(H_3O^+\)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>البدئية</strong></td>
+                                            <td>0</td>
+                                            <td>\(n_0 = C_0 \cdot V\)</td>
+                                            <td>وافر</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>خلال التحول</strong></td>
+                                            <td>\(x\)</td>
+                                            <td>\(n_0 - x\)</td>
+                                            <td>وافر</td>
+                                            <td>\(x\)</td>
+                                            <td>\(x\)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>النهائية</strong></td>
+                                            <td>\(x_f\)</td>
+                                            <td>\(n_0 - x_f\)</td>
+                                            <td>وافر</td>
+                                            <td>\(x_f\)</td>
+                                            <td>\(x_f\)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">1.6</span>
+                            حساب \(x_{max}\) و \(x_f\)
+                        </div>
+                        <div class="answer">
+                            <p><strong>التقدم الأقصى \(x_{max}\):</strong></p>
+                            <p>بفرض التفاعل كلي: \(n_0 - x_{max} = 0\)</p>
+                            <div class="equation-box">
+                                $$x_{max} = C_0 \cdot V = (3.0 \times 10^{-5}) \times 0.1$$
+                            </div>
+                            <div class="final-result">
+                                $$x_{max} = 3.0 \times 10^{-6} \text{ mol}$$
+                            </div>
+
+                            <p><strong>التقدم النهائي \(x_f\):</strong></p>
+                            <div class="equation-box">
+                                $$x_f = [H_3O^+] \cdot V = 10^{-pH} \cdot V = 10^{-5.5} \times 0.1$$
+                            </div>
+                            <div class="final-result">
+                                $$x_f \approx 3.16 \times 10^{-7} \text{ mol}$$
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">1.7</span>
+                            نسبة التقدم النهائي \(\tau\)
+                        </div>
+                        <div class="answer">
+                            <div class="equation-box">
+                                $$\tau = \frac{x_f}{x_{max}} = \frac{3.16 \times 10^{-7}}{3.0 \times 10^{-6}}$$
+                            </div>
+                            <div class="final-result">
+                                $$\tau \approx 0.105 \text{ أي } 10.5\%$$
+                            </div>
+                            <div class="warning-box">
+                                <strong>الاستنتاج:</strong> التفاعل غير كلي (محدود) لأن \(\tau < 1\)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الجزء الثالث -->
+                <div class="part">
+                    <div class="part-title">
+                        <span>📌</span> الجزء الثالث: تفاعل الكاشف مع حمض الكلوريدريك
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">2.1</span>
+                            النوع المهيمن ولون المحلول
+                        </div>
+                        <div class="answer">
+                            <p>عند إضافة حمض قوي (\(H_3O^+\))، ينخفض \(pH\) المحلول بشكل كبير.</p>
+                            <p>بما أن \(C_A = 1 \text{ mol/L}\) في حجم صغير، سيصبح \(pH\) المحلول \(S_1\) أقل من \(pK_A\).</p>
+                            <div class="final-result">
+                                النوع الحمضي \(HIn\) هو المهيمن
+                                <br>
+                                لون المحلول: <span style="background: #fbbf24; padding: 5px 15px; border-radius: 5px; color: #000;">أصفر</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">2.2</span>
+                            المعادلة الكيميائية
+                        </div>
+                        <div class="answer">
+                            <p>تفاعل النوع القاعدي للكاشف مع أيونات الأوكسونيوم المضافة:</p>
+                            <div class="equation-box">
+                                $$In^-_{(aq)} + H_3O^+_{(aq)} \rightarrow HIn_{(aq)} + H_2O_{(l)}$$
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <div class="question-title">
+                            <span class="question-number">2.3</span>
+                            ثابتة التوازن \(K\)
+                        </div>
+                        <div class="answer">
+                            <div class="equation-box">
+                                $$K = \frac{[HIn]}{[In^-][H_3O^+]} = \frac{1}{K_A}$$
+                            </div>
+                            <div class="equation-box">
+                                $$K = \frac{1}{10^{-3.9}} = 10^{3.9}$$
+                            </div>
+                            <div class="final-result">
+                                $$K \approx 7943$$
+                            </div>
+                            <div class="success-box">
+                                بما أن \(K\) كبيرة جداً (\(K > 10^4\))، فإن التفاعل بين الكاشف والحمض المضاف يعتبر <strong>تفاعلاً كلياً</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- التذييل -->
+        <div class="footer">
+            <p>📝 تصحيح نموذجي - سلسلة التوازنات الحمضية القاعدية</p>
+            <p style="margin-top: 12px; font-size: 0.9em; opacity: 0.8;">
+                السنة الثانية بكالوريا - علوم تجريبية
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // تأثير ظهور العناصر عند التمرير
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.question').forEach(q => {
+            q.style.opacity = '0';
+            q.style.transform = 'translateY(20px)';
+            q.style.transition = 'all 0.5s ease';
+            observer.observe(q);
+        });
+
+        // التمرير السلس
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
