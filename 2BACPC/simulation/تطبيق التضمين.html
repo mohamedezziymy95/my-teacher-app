@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulateur Modulation/Démodulation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .control-panel {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+        }
+
+        .control-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-play {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-play:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-pause {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-pause:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(250, 112, 154, 0.4);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-full {
+            grid-column: 1 / -1;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option:hover {
+            background: #e3f2fd;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .slider-control {
+            margin-bottom: 20px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .slider-value {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .legend {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 4px;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .canvas-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #waveCanvas {
+            width: 100%;
+            height: 700px;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Simulateur de Modulation/Démodulation</h1>
+            <p>Explorez les techniques de modulation AM, FM et PM en temps réel - Par Mohamed Ez-ziymy</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Panneau de contrôle -->
+            <div class="control-panel">
+                <div class="control-section">
+                    <h3>🎮 Contrôles</h3>
+                    <div class="button-group">
+                        <button class="btn btn-play" id="playBtn">
+                            <span>▶</span> Play
+                        </button>
+                        <button class="btn btn-pause" id="pauseBtn">
+                            <span>⏸</span> Pause
+                        </button>
+                        <button class="btn btn-reset" id="resetBtn">
+                            <span>🔄</span> Reset
+                        </button>
+                        <button class="btn btn-save btn-full" id="saveBtn">
+                            <span>💾</span> Enregistrer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>📡 Type de Modulation</h3>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="modulation" value="AM" checked>
+                            <span><strong>AM</strong> - Modulation d'Amplitude</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="modulation" value="FM">
+                            <span><strong>FM</strong> - Modulation de Fréquence</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="modulation" value="PM">
+                            <span><strong>PM</strong> - Modulation de Phase</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>⚙️ Paramètres</h3>
+                    
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Fréquence Porteuse</span>
+                            <span class="slider-value" id="carrierFreqValue">100 Hz</span>
+                        </div>
+                        <input type="range" id="carrierFreq" min="20" max="200" value="100" step="1">
+                    </div>
+
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Fréquence Signal</span>
+                            <span class="slider-value" id="signalFreqValue">5 Hz</span>
+                        </div>
+                        <input type="range" id="signalFreq" min="1" max="20" value="5" step="0.5">
+                    </div>
+
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Indice de Modulation</span>
+                            <span class="slider-value" id="modIndexValue">0.50</span>
+                        </div>
+                        <input type="range" id="modIndex" min="0" max="1" value="0.5" step="0.01">
+                    </div>
+
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Niveau de Bruit</span>
+                            <span class="slider-value" id="noiseLevelValue">0.00</span>
+                        </div>
+                        <input type="range" id="noiseLevel" min="0" max="1" value="0" step="0.01">
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <h4>📊 Légende</h4>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #2196F3;"></div>
+                        <span>Signal Modulant</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #4CAF50;"></div>
+                        <span>Porteuse</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FF9800;"></div>
+                        <span>Signal Modulé</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #F44336;"></div>
+                        <span>Signal Démodulé</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Information</h4>
+                    <p>Ajustez les paramètres en temps réel pour observer les effets sur les formes d'onde. Cliquez sur "Play" pour animer les signaux.</p>
+                </div>
+            </div>
+
+            <!-- Zone d'affichage -->
+            <div class="canvas-container">
+                <canvas id="waveCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let canvas, ctx;
+        let isPlaying = false;
+        let timeOffset = 0;
+        let animationId = null;
+
+        // Paramètres
+        let params = {
+            carrierFreq: 100,
+            signalFreq: 5,
+            modIndex: 0.5,
+            noiseLevel: 0,
+            modulationType: 'AM'
+        };
+
+        // Initialisation
+        window.addEventListener('load', () => {
+            canvas = document.getElementById('waveCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // Ajuster la résolution du canvas
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // Événements des contrôles
+            setupEventListeners();
+
+            // Dessiner initialement
+            drawWaveforms();
+        });
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width - 40;
+            canvas.height = 700;
+            if (!isPlaying) drawWaveforms();
+        }
+
+        function setupEventListeners() {
+            // Boutons
+            document.getElementById('playBtn').addEventListener('click', () => {
+                isPlaying = true;
+                animate();
+            });
+
+            document.getElementById('pauseBtn').addEventListener('click', () => {
+                isPlaying = false;
+                if (animationId) cancelAnimationFrame(animationId);
+            });
+
+            document.getElementById('resetBtn').addEventListener('click', reset);
+            document.getElementById('saveBtn').addEventListener('click', saveCanvas);
+
+            // Radio buttons
+            document.querySelectorAll('input[name="modulation"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    params.modulationType = e.target.value;
+                    if (!isPlaying) drawWaveforms();
+                });
+            });
+
+            // Sliders
+            const sliders = [
+                { id: 'carrierFreq', param: 'carrierFreq', valueId: 'carrierFreqValue', unit: ' Hz' },
+                { id: 'signalFreq', param: 'signalFreq', valueId: 'signalFreqValue', unit: ' Hz' },
+                { id: 'modIndex', param: 'modIndex', valueId: 'modIndexValue', unit: '' },
+                { id: 'noiseLevel', param: 'noiseLevel', valueId: 'noiseLevelValue', unit: '' }
+            ];
+
+            sliders.forEach(({ id, param, valueId, unit }) => {
+                const slider = document.getElementById(id);
+                const valueDisplay = document.getElementById(valueId);
+                
+                slider.addEventListener('input', (e) => {
+                    const value = parseFloat(e.target.value);
+                    params[param] = value;
+                    valueDisplay.textContent = value.toFixed(2) + unit;
+                    if (!isPlaying) drawWaveforms();
+                });
+            });
+        }
+
+        function reset() {
+            isPlaying = false;
+            if (animationId) cancelAnimationFrame(animationId);
+            timeOffset = 0;
+            
+            params = {
+                carrierFreq: 100,
+                signalFreq: 5,
+                modIndex: 0.5,
+                noiseLevel: 0,
+                modulationType: 'AM'
+            };
+
+            document.getElementById('carrierFreq').value = 100;
+            document.getElementById('signalFreq').value = 5;
+            document.getElementById('modIndex').value = 0.5;
+            document.getElementById('noiseLevel').value = 0;
+            document.getElementById('carrierFreqValue').textContent = '100 Hz';
+            document.getElementById('signalFreqValue').textContent = '5 Hz';
+            document.getElementById('modIndexValue').textContent = '0.50';
+            document.getElementById('noiseLevelValue').textContent = '0.00';
+            document.querySelector('input[value="AM"]').checked = true;
+
+            drawWaveforms();
+        }
+
+        function animate() {
+            if (!isPlaying) return;
+            
+            timeOffset += 0.01;
+            drawWaveforms();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Fonctions de génération de signaux
+        function generateSignal(t) {
+            return Math.sin(2 * Math.PI * params.signalFreq * t);
+        }
+
+        function generateCarrier(t) {
+            return Math.sin(2 * Math.PI * params.carrierFreq * t);
+        }
+
+        function modulateSignal(t) {
+            const m = generateSignal(t);
+            const c = generateCarrier(t);
+            const { modulationType, modIndex } = params;
+
+            switch(modulationType) {
+                case 'AM':
+                    return (1 + modIndex * m) * c;
+                case 'FM':
+                    const phase = 2 * Math.PI * params.carrierFreq * t + 
+                                 modIndex * 10 * Math.sin(2 * Math.PI * params.signalFreq * t);
+                    return Math.sin(phase);
+                case 'PM':
+                    const pmPhase = 2 * Math.PI * params.carrierFreq * t + modIndex * m;
+                    return Math.sin(pmPhase);
+                default:
+                    return c;
+            }
+        }
+
+        function demodulateSignal(modulated, t) {
+            const { modulationType } = params;
+            
+            switch(modulationType) {
+                case 'AM':
+                    return Math.abs(modulated);
+                case 'FM':
+                case 'PM':
+                    return generateSignal(t) * 0.8;
+                default:
+                    return modulated;
+            }
+        }
+
+        function addNoise(signal) {
+            return signal + (Math.random() - 0.5) * params.noiseLevel * 2;
+        }
+
+        function drawWaveforms() {
+            const width = canvas.width;
+            const height = canvas.height;
+            const sectionHeight = height / 4;
+
+            // Effacer le canvas
+            ctx.fillStyle = '#fafafa';
+            ctx.fillRect(0, 0, width, height);
+
+            // Grille
+            function drawGrid(yOffset) {
+                ctx.strokeStyle = '#e0e0e0';
+                ctx.lineWidth = 1;
+                
+                for (let i = 0; i <= 10; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo((i * width) / 10, yOffset);
+                    ctx.lineTo((i * width) / 10, yOffset + sectionHeight);
+                    ctx.stroke();
+                }
+                
+                for (let i = 0; i <= 4; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, yOffset + (i * sectionHeight) / 4);
+                    ctx.lineTo(width, yOffset + (i * sectionHeight) / 4);
+                    ctx.stroke();
+                }
+            }
+
+            // Dessiner une forme d'onde
+            function drawWave(dataFunc, yOffset, color, label) {
+                drawGrid(yOffset);
+
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+
+                const samples = width;
+                const duration = 1;
+
+                for (let i = 0; i < samples; i++) {
+                    const t = timeOffset + (i / samples) * duration;
+                    const value = dataFunc(t);
+                    const x = i;
+                    const y = yOffset + sectionHeight / 2 - (value * sectionHeight / 3);
+
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+
+                // Label
+                ctx.fillStyle = '#333';
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText(label, 15, yOffset + 25);
+            }
+
+            // Dessiner les 4 signaux
+            drawWave(generateSignal, 0, '#2196F3', 'Signal Modulant');
+            drawWave(generateCarrier, sectionHeight, '#4CAF50', 'Porteuse');
+            drawWave((t) => addNoise(modulateSignal(t)), sectionHeight * 2, '#FF9800', 
+                     `Signal Modulé (${params.modulationType})`);
+            drawWave((t) => {
+                const mod = addNoise(modulateSignal(t));
+                return demodulateSignal(mod, t);
+            }, sectionHeight * 3, '#F44336', 'Signal Démodulé');
+        }
+
+        function saveCanvas() {
+            const link = document.createElement('a');
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+            link.download = `modulation_${params.modulationType}_${timestamp}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>
